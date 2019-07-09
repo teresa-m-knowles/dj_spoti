@@ -7,13 +7,11 @@ class PartyController < ApplicationController
     party = Party.new(party_params)
     party.identifier = SecureRandom.urlsafe_base64.to_s
     party.admin = current_user
-    # TrackBroadcastWorker.perform_async(party.current_song)
     if party.save
       current_user.update_attribute(:party_id, party.id)
       session[:party_identifier] = party.identifier
       new_playlist(party)
       party.current_song
-      # TrackBroadcastJob.perform_later(party.current_song.serialize_data) if party.current_song
     end
     invite_people(params)
     redirect_to dashboard_path
@@ -41,7 +39,7 @@ class PartyController < ApplicationController
       begin
         send_invitation(value, current_party) if key.start_with?("ph_number")
       rescue
-        return if value =''
+        return if value ==''
         flash[:error] = "Inviation could not be sent to #{value}.Please Make sure its a valid number."
       end
     end

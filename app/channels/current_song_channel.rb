@@ -5,13 +5,7 @@ class CurrentSongChannel < ApplicationCable::Channel
   end
 
   def unsubscribe
-
   end
-  #
-  # def receive(data)
-  #   ActionCable.server.broadcast("current_song_#{params[:party]}", data)
-  # end
-
 
 
 end
